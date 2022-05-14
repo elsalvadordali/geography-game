@@ -4,33 +4,29 @@
 	import * as d3 from 'd3'
 	import * as geo from 'd3-geo'
     import * as topojson from 'topojson'
-	
-	const width = 1400;
-    const height = 900;
 
-    const svg = d3.select('body').append('svg').attr('width', width).attr('height', height);
+    d3.select('body').attr('style', 'padding: 0; overflow: hidden;')
 
-    const projection = d3.geoMercator().scale(140)
-        .translate([width / 2, height / 1.4]);
-    const path = d3.geoPath(projection);
+    const svg = d3.select('body').append('svg').attr('width', window.innerWidth).attr('height', window.innerHeight);
+    let g = svg.append('g');
 
-    const g = svg.append('g');
+    d3.select(window).on('resize', () => (svg.attr('width', window.innerWidth).attr('height', window.innerHeight), d3json()))
 
-    d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
-        .then(data => {
+    function d3json() {
+    	g.remove()
+    	g = svg.append('g')
+    	d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
+	        .then(data => {
+	        	const projection = d3.geoMercator().fitSize([window.innerWidth, window.innerHeight], topojson.feature(data, data.objects.countries));
 
-            const countries = topojson.feature(data, data.objects.countries);
-            g.selectAll('path').data(countries.features).enter().append('path').attr('class', 'country').attr('d', path);
+	            g.selectAll('path').data(topojson.feature(data, data.objects.countries).features).enter().append('path').attr('fill', 'none').attr('stroke', 'black').attr('stroke-width', '1').attr('class', 'country').attr('d', d3.geoPath(projection));
 
-        });
+	        });
+	}
+	d3json()
 
     </script>
       
-
-<div id='map'>
-	<svg width="1200" height="850"> 
-	</svg> 
-</div>
 
 <style>
 	#map {
