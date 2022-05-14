@@ -10,7 +10,7 @@
     const svg = d3.select('body').append('svg').attr('width', window.innerWidth).attr('height', window.innerHeight);
     let g = svg.append('g');
 
-    d3.select(window).on('resize', () => svg.attr('width', window.innerWidth).attr('height', window.innerHeight), d3json())
+    d3.select(window).on('resize', () => (svg.attr('width', window.innerWidth).attr('height', window.innerHeight), d3json()))
 
     function d3json() {
     	g.remove()
