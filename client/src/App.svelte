@@ -2,7 +2,9 @@
 	export let name;
    
 	import * as d3 from 'd3'
+import { dispatch } from 'd3';
 	import * as geo from 'd3-geo'
+import { add_attribute } from 'svelte/internal';
     import * as topojson from 'topojson'
 
     d3.select('body').attr('style', 'padding: 0; overflow: hidden;')
@@ -19,7 +21,17 @@
 	        .then(data => {
 	        	const projection = d3.geoMercator().fitSize([window.innerWidth, window.innerHeight], topojson.feature(data, data.objects.countries));
 
-	            g.selectAll('path').data(topojson.feature(data, data.objects.countries).features).enter().append('path').attr('fill', 'none').attr('stroke', 'black').attr('stroke-width', '1').attr('class', 'country').attr('d', d3.geoPath(projection));
+	            g.selectAll('path').data(topojson.feature(data, data.objects.countries).features).enter()
+				.append('path')
+				.attr('fill', 'none')
+				.attr('stroke', 'black')
+				.attr('stroke-width', '1')
+				.attr('class', 'country')
+				.attr('d', d3.geoPath(projection))
+				.on('mouseover', function(d) {
+					d3.select(this).attr('fill', 'blue')
+					//d.target.attr('fill', 'green')
+				})
 
 	        });
 	}
