@@ -2,9 +2,6 @@
 	export let name;
    
 	import * as d3 from 'd3'
-import { dispatch } from 'd3';
-	import * as geo from 'd3-geo'
-import { add_attribute } from 'svelte/internal';
     import * as topojson from 'topojson'
 
     d3.select('body').attr('style', 'padding: 0; overflow: hidden;')
