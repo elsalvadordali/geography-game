@@ -3,23 +3,22 @@ const cors = require('cors')
 const app = express()
 const port = 3030
 
-const http = require('http')
-const server = http.createServer(app)
+const httpServer = require('http').createServer(app)
 
 app.use(cors())
 
-const io = require('socket.io')(server, {
-  origins: 'http://localhost:8080',
-})
+cconst io = require('socket.io')(httpServer, {cors: {
+  origin: 'http://localhost:8080/',
+}})
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
 io.on('connection', socket => {
-  socket.on('user-clicked', msg => {
-    console.log(msg)
+  socket.on('hello', arg => {
+    console.log(arg) // world
   })
 })
 
-app.listen(port, () => console.log(`Application listening on port ${port}!`))
+app.listen(port, () => console.log(`Online!`))
